@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Revin’s Workout app</title>
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#111111">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f7f9;--card:#fff;--tx:#14181f;--mut:#667085;--ac:#e8590c;--bd:#e3e6eb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1217;--card:#1a1f27;--tx:#eef1f5;--mut:#98a2b3;--ac:#ff8a4c;--bd:#2a313b}}
+:root[data-theme="dark"]{--bg:#0f1217;--card:#1a1f27;--tx:#eef1f5;--mut:#98a2b3;--ac:#ff8a4c;--bd:#2a313b}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:0 14px 80px;max-width:640px;margin-inline:auto}
+h1{font-size:22px;margin:16px 0 4px}h2{font-size:17px;margin:0 0 8px}p{margin:4px 0}
+.sub{color:var(--mut);font-size:14px}
+nav{display:flex;gap:6px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:5}
+nav button{flex:1;padding:10px 4px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;font:inherit;font-size:14px}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:10px 0}
+label{display:block;font-size:14px;color:var(--mut);margin:10px 0 4px}
+select,input[type=number]{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:8px 12px;border:1px solid var(--bd);border-radius:20px;background:var(--bg);color:var(--tx);font:inherit;font-size:14px}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn{width:100%;padding:14px;border:0;border-radius:12px;background:var(--ac);color:#fff;font:inherit;font-weight:600;margin-top:12px}
+.btn.alt{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:10px;background:var(--bg);color:var(--ac);border:1px solid var(--bd);margin-left:6px}
+.ex{padding:8px 0;border-top:1px solid var(--bd)}.ex:first-of-type{border-top:0}
+.ex b{display:block}.ex span{color:var(--mut);font-size:14px}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center}
+.big div{background:var(--bg);border-radius:12px;padding:12px}.big strong{display:block;font-size:28px;font-variant-numeric:tabular-nums}.big small{color:var(--mut)}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.pc{background:var(--bg);border:2px solid var(--bd);border-radius:12px;padding:8px;color:var(--tx);font:inherit;text-align:center}.pc.on{border-color:var(--ac)}.pc svg{height:150px;width:100%}.pc b{display:block;margin-top:4px}.pc small{color:var(--mut);font-size:12px}.calf{fill:var(--ac);stroke:none}
+.ck{display:flex;gap:10px;align-items:flex-start}.ck input{width:22px;height:22px;margin-top:2px;accent-color:var(--ac);flex:none}.ck input:checked+div{opacity:.5;text-decoration:line-through}.bar{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin:8px 0 4px}.bar i{display:block;height:100%;background:var(--ac)}
+.days{display:flex;gap:4px;margin:10px 0}.dtab{flex:1;padding:8px 0;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;font:inherit;font-size:13px}.dtab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+input[type=text],input[type=time]{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}input[type=time]{width:auto;flex:1}.x{border:0;background:none;color:var(--mut);font-size:18px;padding:0 6px;margin-left:auto}.ck>div{flex:1}nav button{font-size:12.5px;padding:10px 2px}
+.logo{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:#fff;border:1px solid #d9dde3;font-size:28px;flex:none}.ban{display:flex;border-radius:14px;overflow:hidden;margin:6px 0 4px;border:1px solid var(--bd)}.ban .bl{background:#fff;width:64px;display:grid;place-items:center;font-size:30px;padding:8px 0}.ban .br{flex:1;background:#111;color:#fff;font-weight:700;font-size:18px;display:flex;align-items:center;padding:0 16px}
+.hide{display:none}.note{font-size:13px;color:var(--mut)}
+</style></head><body>
+<h1 style="display:flex;align-items:center;gap:10px"><span class="logo">🕷️</span>Revin’s Workout app</h1>
+<p class="sub">Goal-based workouts, GPS run tracking and result predictions.</p>
+<nav><button data-t="plan" class="on">Plan</button><button data-t="work">Workout</button><button data-t="track">Track</button><button data-t="pred">Predict</button><button data-t="rem">Reminders</button></nav>
+
+<section id="plan">
+<div class="card"><h2>Your goal</h2>
+<label>Pick the physique you want (every one has big calves)</label>
+<div id="phys" class="pgrid"></div>
+<label>Experience</label>
+<select id="level"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+<label>Session length (minutes)</label>
+<input type="number" id="mins" value="45" min="15" max="120">
+<label>Equipment you have (tap all)</label>
+<div class="chips" id="equip"></div>
+</div>
+<button class="btn" id="mine">Use my own routine (from your notes)</button>
+<button class="btn alt" id="gen">Generate an AI plan instead</button>
+<button class="btn alt" id="off">Save app for offline use</button><p class="note" id="offmsg">Everything except AI generation works without internet; offline it uses the built-in plan.</p>
+
+</section>
+
+<section id="work" class="hide"><div id="wout"><div class="card sub">No workout yet. Set your goal in Plan.</div></div></section>
+
+<section id="track" class="hide">
+<div class="card"><div class="big">
+<div><strong id="dist">0.00</strong><small>km</small></div>
+<div><strong id="time">0:00</strong><small>time</small></div>
+<div><strong id="spd">0.0</strong><small>km/h now</small></div>
+<div><strong id="pace">--</strong><small>min/km avg</small></div></div>
+<button class="btn" id="go">Start run</button>
+<button class="btn alt hide" id="stop">Finish &amp; save</button>
+<p class="note" id="gpsmsg">Uses your phone’s GPS. Allow location when asked and keep the screen on.</p></div>
+<div class="card"><h2>History</h2><div id="hist" class="sub">No sessions yet.</div></div>
+</section>
+
+<section id="rem" class="hide"><div class="card"><h2>Today’s reminders</h2>
+<input type="text" id="rtext" placeholder="e.g. Drink water, stretch, meal prep" maxlength="80">
+<div style="display:flex;gap:8px;margin-top:8px;align-items:center"><input type="time" id="rtime"><label class="ck" style="margin:0;align-items:center"><input type="checkbox" id="rdaily">Repeat daily</label></div>
+<button class="btn" id="radd">Add reminder</button><p class="note" style="margin-top:8px">This is a checklist. It won’t buzz your phone, so set a phone alarm for anything urgent.</p></div>
+<div class="card" id="rlist"></div></section>
+
+<section id="pred" class="hide"><div class="card" id="predout" class="sub">Loading…</div></section>
+
+<script>
+const $=s=>document.querySelector(s);
+const EQ=["All equipment","Bodyweight only","Dumbbells","Barbell & rack","Kettlebell","Resistance bands","Pull-up bar","Bench","Cables / machines","Jump rope","Box / step","Treadmill"];
+let st={chk:{},chkWeek:"",day:0,ph:0,goal:"Build muscle",level:"Beginner",mins:45,equip:["Bodyweight only"],plan:null,sessions:[]};
+try{const s=localStorage.getItem("fc");if(s)st=Object.assign(st,JSON.parse(s))}catch(e){}
+const save=()=>{try{localStorage.setItem("fc",JSON.stringify(st))}catch(e){}};
+
+$("#mine").onclick=()=>{st.plan=ROUTINE;st.src="mine";st.chk={};save();render();document.querySelector('[data-t="work"]').click()};
+$("#off").onclick=async()=>{const m=$("#offmsg");try{const dl=await claude.use("downloads");if(!dl){m.textContent="Saving isn’t available here. Use your browser’s Share or Menu → Add to Home Screen or Save Page.";return}
+ const c=document.documentElement.cloneNode(true);["#equip","#phys","#wout","#hist","#predout"].forEach(s=>c.querySelector(s).innerHTML="");
+ await dl.save({filename:"revins-workout.html",data:"<!DOCTYPE html>"+c.outerHTML});m.textContent="Saved. Open revins-workout.html from your Files app to use it with no internet. Its data is stored separately from this online copy."}catch(e){m.textContent="Couldn’t save the file. Use your browser’s Share or Menu → Add to Home Screen or Save Page."}};
+// tabs
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));
+ ["plan","work","track","pred","rem"].forEach(t=>$("#"+t).classList.toggle("hide",t!==b.dataset.t));
+ if(b.dataset.t==="pred")predict();if(b.dataset.t==="rem")rrender();
+});
+[["plan","Plan"],["work","Workout"],["track","Track"],["pred","Predict"],["rem","Reminders"]].forEach(([id,n])=>{const s=document.getElementById(id);if(s&&!s.querySelector(".ban"))s.insertAdjacentHTML("afterbegin",`<div class="ban"><div class="bl">🕷️</div><div class="br">${n}</div></div>`)});
+try{if(!document.querySelector('link[rel="apple-touch-icon"]')){const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,180,180);x.font="120px serif";x.textAlign="center";x.textBaseline="middle";x.fillText("🕷️",90,98);const u=c.toDataURL("image/png");["apple-touch-icon","icon"].forEach(r=>{const l=document.createElement("link");l.rel=r;l.href=u;document.head.appendChild(l)})}}catch(e){}
+// setup
+$("#level").value=st.level;$("#mins").value=st.mins;
+EQ.forEach(e=>{const b=document.createElement("button");b.className="chip"+((e==="All equipment"?EQ.slice(1).every(x=>st.equip.includes(x)):st.equip.includes(e))?" on":"");b.textContent=e;
+ b.onclick=()=>{const all=[...document.querySelectorAll("#equip .chip")];
+  if(e==="All equipment"){const on=!b.classList.contains("on");all.forEach(x=>x.classList.toggle("on",on))}
+  else{b.classList.toggle("on");all[0].classList.toggle("on",all.slice(1).every(x=>x.classList.contains("on")))}
+  st.equip=all.filter(x=>x!==all[0]&&x.classList.contains("on")).map(x=>x.textContent);save()};$("#equip").appendChild(b)});
+["level","mins"].forEach(i=>$("#"+i).onchange=()=>{st[i]=$("#"+i).value;save()});
+
+// physique picker (stylized illustrations, calves highlighted)
+const PH=[
+{n:"Lean athlete",d:"Lean, defined, fast",sh:17,wa:12,th:11,ar:7,ca:8,g:"a lean, defined athletic build (low body fat, runner/athlete look)"},
+{n:"Big & muscular",d:"Maximum size",sh:24,wa:16,th:17,ar:11,ca:11,g:"a big, muscular bodybuilder-style build (maximum muscle mass)"},
+{n:"V-taper aesthetic",d:"Wide shoulders, small waist",sh:23,wa:11,th:13,ar:9,ca:10,g:"an aesthetic V-taper build (wide shoulders and back, narrow waist, balanced legs)"},
+{n:"Strong & thick",d:"Powerful, dense",sh:22,wa:19,th:18,ar:10,ca:11,g:"a thick, powerful strongman/powerlifter-style build (dense muscle, high strength)"},
+{n:"Explosive sprinter",d:"Muscular legs, fast",sh:20,wa:12,th:15,ar:8,ca:10,g:"an explosive sprinter/jumper build (powerful muscular legs, lean upper body)"}];
+function fig(p){const L=x=>`<line x1="${x}" y1="100" x2="${x}" y2="140" stroke-width="${p.th}"/><ellipse cx="${x}" cy="158" rx="${p.ca}" ry="17" class="calf"/><line x1="${x}" y1="172" x2="${x}" y2="190" stroke-width="5"/>`;
+ return `<svg viewBox="0 0 100 200" aria-hidden="true"><g stroke="var(--mut)" stroke-linecap="round" fill="var(--mut)"><circle cx="50" cy="16" r="9" stroke="none"/><rect x="46" y="24" width="8" height="10" stroke="none"/><polygon stroke="none" points="${50-p.sh},34 ${50+p.sh},34 ${50+p.wa},88 ${53+p.wa},102 ${47-p.wa},102 ${50-p.wa},88"/><line x1="${47-p.sh}" y1="40" x2="${44-p.sh}" y2="88" stroke-width="${p.ar}"/><line x1="${53+p.sh}" y1="40" x2="${56+p.sh}" y2="88" stroke-width="${p.ar}"/>${L(41)}${L(59)}</g></svg>`}
+function pick(i){st.ph=i;st.goal=PH[i].g+", with very large, well-developed calves";save();document.querySelectorAll(".pc").forEach((c,j)=>c.classList.toggle("on",j===i))}
+PH.forEach((p,i)=>{const b=document.createElement("button");b.className="pc";b.innerHTML=fig(p)+`<b>${p.n}</b><small>${p.d}</small>`;b.onclick=()=>pick(i);$("#phys").appendChild(b)});pick(st.ph);
+
+// local fallback library
+const LIB={
+ Strength:[["Push-ups","3×max",0],["Bodyweight squats","4×15",0],["Dumbbell goblet squat","4×10","Dumbbells"],["Dumbbell row","4×10 each","Dumbbells"],["Barbell back squat","5×5","Barbell & rack"],["Bench press","4×6","Bench"],["Pull-ups","4×max","Pull-up bar"],["Kettlebell swing","4×15","Kettlebell"],["Band row","4×12","Resistance bands"]],
+ Physique:[["Standing calf raises (pause at top, deep stretch at bottom)","5×15–20",0],["Single-leg calf raise on a step","4×12 each","Box / step"],["Seated calf raise (dumbbells on knees)","4×15","Dumbbells"],["Lateral raises","3×15","Dumbbells"],["Bicep curls","3×12","Dumbbells"],["Cable triceps pushdown","3×12","Cables / machines"],["Plank","3×45s",0],["Hanging knee raises","3×12","Pull-up bar"],["Pike push-ups","3×10",0],["Band pull-aparts","3×20","Resistance bands"]],
+ "Cardio · Speed":[["6×200 m fast, 90s rest","",0],["8×30s hill or treadmill sprint","","Treadmill"],["Jump rope intervals 10×30s on / 30s off","","Jump rope"]],
+ "Cardio · Endurance":[["25–40 min steady run at easy, conversational pace","",0],["Tempo: 10 min easy, 15 min comfortably hard, 5 min easy","",0]],
+ "Plyometrics · Explosiveness":[["Squat jumps","4×8",0],["Box jumps","4×5","Box / step"],["Broad jumps","4×5",0]],
+ "Plyometrics · Power":[["Medicine-ball style slam / kettlebell swing","4×8","Kettlebell"],["Clap push-ups","3×6",0],["Jump lunges","3×10 each",0]]};
+LIB["Upper Body"]=[["Push-ups (calisthenics)","4×max",0],["Pull-ups (calisthenics)","4×max","Pull-up bar"],["Dumbbell shoulder press (lifting)","4×8","Dumbbells"],["Dumbbell row (lifting)","4×10 each","Dumbbells"],["Bench press (lifting)","4×6","Bench"],["Pike push-ups (calisthenics)","3×10",0],["Band row (lifting)","4×12","Resistance bands"],["Bench dips (calisthenics)","3×12","Bench"]];
+LIB.Core=[["Plank","3×45s",0],["Hanging knee raises","3×12","Pull-up bar"],["Hollow body hold","3×30s",0],["Dead bug","3×12 each",0],["Russian twists","3×20",0],["Kettlebell suitcase carry","3×30 m each","Kettlebell"]];
+LIB["Lower Body"]=[["Standing calf raises (pause at top, deep stretch at bottom)","5×15–20",0],["Single-leg calf raise on a step","4×12 each","Box / step"],["Seated calf raise (dumbbells on knees)","4×15","Dumbbells"],["Barbell back squat (lifting)","5×5","Barbell & rack"],["Goblet squat (lifting)","4×10","Dumbbells"],["Bodyweight squats (calisthenics)","4×15",0],["Walking lunges (calisthenics)","3×12 each",0],["Romanian deadlift (lifting)","4×8","Dumbbells"],["Kettlebell swing (lifting)","4×15","Kettlebell"]];
+function fallback(){const has=x=>!x||st.equip.includes(x),rot=(a,k)=>a.slice(k).concat(a.slice(0,k));
+ const it=x=>({name:x[0],detail:x[1]});
+ const get=(n,k)=>({name:n,focus:"",items:rot(LIB[n].filter(x=>has(x[2])),k).slice(0,4).map(it)});
+ const low=()=>({name:"Lower Body",focus:"Calves first, trained 3+ times a week.",items:LIB["Lower Body"].filter(x=>has(x[2])).slice(0,5).map(it)});
+ const M={Mon:["Strength",0],Tue:["Cardio",0],Wed:["Strength",2],Thu:["Plyo",0],Fri:["Strength",4],Sat:["Cardio",1],Sun:["Rest",0]};
+ const SEC={Strength:k=>[get("Upper Body",k),get("Core",k),low()],Cardio:k=>[get("Cardio · Speed",0),get("Cardio · Endurance",k)],Plyo:()=>[get("Plyometrics · Explosiveness",0),get("Plyometrics · Power",0)],Rest:()=>[]};
+ return {title:PH[st.ph].n+" physique + big calves · "+st.level,days:DN.map(d=>({day:d,type:M[d][0],note:"Rest, sleep 8+ hours, walk lightly and stretch your calves.",sections:SEC[M[d][0]](M[d][1])}))};}
+
+$("#gen").onclick=async()=>{
+ const btn=$("#gen");btn.textContent="Building your plan…";btn.disabled=true;
+ let plan=null;
+ try{
+  const sample=await claude.use("sample");
+  if(sample&&navigator.onLine!==false){
+   plan=await sample.json(`You are an expert strength & conditioning coach. Build a full 7-day weekly program (one session per day) using current sport-science best practice.
+The user picked their dream physique from pictures: ${st.goal}. Build the session to create THIS physique. EVERY plan must include dedicated calf-growth work in the Lower Body section (at least 2 exercises covering gastrocnemius with straight knees and soleus with bent knees, with sets, reps, tempo and a note to train calves 3+ times per week), and use calf-friendly choices in the plyometric and cardio sections. Tailor rep ranges, volume and section weighting to the physique. Level: ${st.level}. Time per session: ${st.mins} min. Equipment available (use ONLY this): ${st.equip.join(", ")}.
+Return ONLY JSON: {"title":string,"days":[{"day":"Mon","type":string,"note":string,"sections":[{"name":string,"focus":string,"items":[{"name":string,"detail":string}]}]}]} with exactly 7 days in Mon to Sun order.
+The weekly split is FIXED: Mon, Wed, Fri = Strength days with exactly three sections: "Upper Body", "Core", "Lower Body" (each mixes calisthenics AND weight lifting where the equipment allows, and the detail says which is which; vary the three days, e.g. Mon push emphasis, Wed pull emphasis, Fri mixed). Tue and Sat = Cardio days (sections "Cardio · Speed" and "Cardio · Endurance"; Tue leans speed, Sat leans endurance). Thu = Plyometrics day (sections "Plyometrics · Explosiveness" and "Plyometrics · Power"). Sun = Rest day (empty sections array, recovery advice in "note"). Use type values "Strength","Cardio","Plyo","Rest". Put at least 2 dedicated calf exercises in the Lower Body section on every strength day, and use calf-friendly work on other training days.
+"focus" is one short sentence on why it suits the goal. Tailor volume and rep ranges to the physique. "detail" = sets×reps / time / rest / intensity. 2–5 items per section, total fits the time.`);
+  }
+ }catch(e){plan=null}
+ if(!plan||!Array.isArray(plan.days)||plan.days.length!==7)plan=fallback();
+ st.plan=plan;st.src="ai";st.chk={};save();render();btn.textContent="Generate an AI plan instead";btn.disabled=false;
+ document.querySelector('[data-t="work"]').click();
+};
+const esc=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];st.day=(new Date().getDay()+6)%7;
+const wk=()=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toDateString()};
+if(st.chkWeek!==wk()){st.chk={};st.chkWeek=wk()}
+const R=(day,type,secs,note)=>({day,type,note:note||"",sections:secs.map(([name,items])=>({name,focus:"",items:items.map(([n,d])=>({name:n,detail:d}))}))});
+const OLD_ROUTINE={title:"My weekly routine",days:[
+R("Mon","Upper Body + Core",[["Upper body",[["Push-ups","4 × 15–20"],["Pike push-ups","3 × 12"],["Pull-ups","4 × 8–10"],["Rows","4 × 8–10"]]],["Core",[["Plank","3 × 1 min 3 s"],["Hanging or lying leg raises","3 × 15"]]]]),
+R("Tue","Spider Legs",[["Legs",[["Squats","4 × 25"],["Walking lunges","3 × 20"],["Jump squats","3 × 12–15"],["Bulgarian split squats","3 × 12 each leg"],["Calf raises","5 × 25"],["Wall sit","3 × 1 min 3 s"]]]]),
+R("Wed","Speed & Agility",[["Speed & agility",[["Warm-up jog","7–10 min"],["Sprints","10 × 30 m"],["High knees","3 × 30 s"],["Lateral shuffles","3 × 30 s"],["Burpees","3 × 15"],["Stretch","10 min"]]]]),
+R("Thu","Full Body",[["Full body",[["Pull-ups","4 × 10 (if not possible: 30 inverted rows)"],["Push-ups","4 × 20"],["Squats","4 × 25"],["Mountain climbers","3 × 40"],["Bear crawl","3 × 20 m"],["Hollow body hold","3 × 30 s"]]]]),
+R("Fri","Explosive Power",[["Explosive power",[["Broad jumps","4 × 10 (rest 2 min)"],["Box or stair jumps","3 × 12"],["Clap push-ups","3 × 10"],["Clap rows","3 × 10"],["Skater jumps","3 × 12 each side"],["Plank with shoulder taps","3 × 20"]]]]),
+R("Sat","Spider Movement",[["Movement",[["Jog","20–30 min"],["Bear crawls","3 × 20 m"],["Crab walks","3 × 20 m"],["Balance practice (1 leg)","6 min"],["Full body stretch",""]]]]),
+R("Sun","Walking",[["Active rest",[["Rest and just spend time walking",""]]]])]};
+if(!st.t0){const d=new Date();d.setHours(0,0,0,0);st.t0=d.getTime()}
+const wks=()=>Math.max(0,Math.floor((Date.now()-st.t0)/6048e5)),lvl=()=>Math.floor(wks()/3);
+const lvlTxt=()=>{const k=3-wks()%3;return "Progress level +"+lvl()+" (reps +1, time +1 s, distance +1 m every 3 weeks). Next step in "+k+" week"+(k>1?"s":"")+"."};
+const fmtT=s=>s<60?s+" s":Math.floor(s/60)+" min"+(s%60?" "+s%60+" s":"");
+function fmtD(a,n){const[,sets,t,lo,hi,ex]=a;if(t==="x")return "";const v=x=>t==="r"?x:t==="d"?x+" m":fmtT(x);
+ const r=hi?(t==="r"?(lo+n)+"–"+(hi+n):v(lo+n)+" – "+v(hi+n)):v(lo+n);return (sets?sets+" × ":"")+r+(ex?" "+ex:"")}
+const RS=(day,type,secs)=>({day,type,note:"",sections:secs.map(([name,items])=>({name,focus:"",items:items.map(a=>({name:a[0],get detail(){return fmtD(a,lvl())}}))}))});
+const ROUTINE={title:"My weekly routine",days:[
+RS("Mon","Upper Body + Core",[["Upper body",[["Push-ups",4,"r",15,20],["Pike push-ups",3,"r",12],["Pull-ups",4,"r",8,10],["Rows",4,"r",8,10]]],["Core",[["Plank",3,"t",63],["Hanging or lying leg raises",3,"r",15]]]]),
+RS("Tue","Spider Legs",[["Legs",[["Squats",4,"r",25],["Walking lunges",3,"r",20],["Jump squats",3,"r",12,15],["Bulgarian split squats",3,"r",12,0,"each leg"],["Calf raises",5,"r",25],["Wall sit",3,"t",63]]]]),
+RS("Wed","Speed & Agility",[["Speed & agility",[["Warm-up jog",0,"t",420,600],["Sprints",10,"d",30],["High knees",3,"t",30],["Lateral shuffles",3,"t",30],["Burpees",3,"r",15],["Stretch",0,"t",600]]]]),
+RS("Thu","Full Body",[["Full body",[["Pull-ups",4,"r",10,0,"(if not possible: 30 inverted rows)"],["Push-ups",4,"r",20],["Squats",4,"r",25],["Mountain climbers",3,"r",40],["Bear crawl",3,"d",20],["Hollow body hold",3,"t",30]]]]),
+RS("Fri","Explosive Power",[["Explosive power",[["Broad jumps",4,"r",10,0,"(rest 2 min)"],["Box or stair jumps",3,"r",12],["Clap push-ups",3,"r",10],["Clap rows",3,"r",10],["Skater jumps",3,"r",12,0,"each side"],["Plank with shoulder taps",3,"r",20]]]]),
+RS("Sat","Spider Movement",[["Movement",[["Jog",0,"t",1200,1800],["Bear crawls",3,"d",20],["Crab walks",3,"d",20],["Balance practice (1 leg)",0,"t",360],["Full body stretch",0,"x"]]]]),
+RS("Sun","Walking",[["Active rest",[["Rest and just spend time walking",0,"x"]]]])]};
+if(st.src!=="ai"){if(st.src!=="mine")st.chk={};st.plan=ROUTINE;st.src="mine";save()}
+function stat(i){const d=st.plan.days.find(x=>x.day===DN[i]);let t=0,n=0;((d&&d.sections)||[]).forEach((s,si)=>(s.items||[]).forEach((_,ii)=>{t++;if(st.chk[i+"-"+si+"-"+ii])n++}));return[n,t]}
+function tick(k,v){st.chk[k]=v;save();render()}
+function setDay(i){st.day=i;render()}
+function render(){const P=st.plan;if(!P||!P.days)return;const d=P.days.find(x=>x.day===DN[st.day])||P.days[0];const p={title:P.title,sections:d.sections||[]};
+ const keys=[];p.sections.forEach((s,si)=>(s.items||[]).forEach((_,ii)=>keys.push(st.day+"-"+si+"-"+ii)));const done=keys.filter(k=>st.chk[k]).length;const W=DN.map((_,i)=>stat(i)).reduce((a,b)=>[a[0]+b[0],a[1]+b[1]],[0,0]);
+ const tabs=`<div class="days">${DN.map((n,i)=>`<button class="dtab${i===st.day?" on":""}" onclick="setDay(${i})">${n}${(()=>{const s=stat(i);return s[1]&&s[0]===s[1]?" ✓":""})()}</button>`).join("")}</div>`;
+ $("#wout").innerHTML=tabs+`<div class="card"><h2>${esc(d.day)} · ${esc(d.type)}</h2><p class="note">${esc(P.title)}</p>${keys.length?`<div class="bar"><i style="width:${Math.round(100*done/keys.length)}%"></i></div><p class="note">${done}/${keys.length} done${done===keys.length?" — session complete!":""}</p>`:""}<p class="sub">This week: ${W[0]} of ${W[1]} exercises done (resets Monday)</p>${st.src==="mine"?`<p class="note">${lvlTxt()}</p>`:""}</div>`+
+ p.sections.map((s,si)=>`<div class="card"><h2>${esc(s.name)}</h2>${s.focus?`<p class="note">${esc(s.focus)}</p>`:""}${(s.items||[]).map((i,ii)=>`<label class="ex ck"><input type="checkbox" ${st.chk[st.day+"-"+si+"-"+ii]?"checked":""} onchange="tick('${st.day}-${si}-${ii}',this.checked)"><div><b>${esc(i.name)}</b><span>${esc(i.detail)}</span></div></label>`).join("")||'<p class="sub">Nothing fits your equipment here.</p>'}</div>`).join("")+(p.sections.length?"":`<div class="card"><h2>Rest day</h2><p class="sub">${esc(d.note||"Sleep 8+ hours, eat enough protein, walk lightly and stretch your calves.")}</p></div>`);}
+render();
+
+// reminders
+const td=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+st.rem=(st.rem||[]).filter(r=>r.daily||r.date===td());
+function rrender(){const t=td(),L=st.rem.filter(r=>r.daily||r.date===t).sort((a,b)=>(a.time||"99").localeCompare(b.time||"99"));
+ $("#rlist").innerHTML=L.length?L.map(r=>`<label class="ex ck"><input type="checkbox" ${r.done&&r.done[t]?"checked":""} onchange="rtick(${r.id},this.checked)"><div><b>${esc(r.text)}</b><span>${r.time||"Anytime"}${r.daily?" · daily":""}</span></div><button class="x" onclick="rdel(event,${r.id})" aria-label="Delete">✕</button></label>`).join("")+`<p class="note">${L.filter(r=>r.done&&r.done[t]).length} of ${L.length} done today</p>`:'<p class="sub">No reminders for today yet.</p>'}
+function rtick(id,v){const r=st.rem.find(x=>x.id===id);if(!r)return;r.done=r.done||{};if(v)r.done[td()]=1;else delete r.done[td()];save();rrender()}
+function rdel(e,id){e.preventDefault();e.stopPropagation();st.rem=st.rem.filter(x=>x.id!==id);save();rrender()}
+$("#radd").onclick=()=>{const x=$("#rtext").value.trim();if(!x)return;st.rem.push({id:Date.now(),text:x,time:$("#rtime").value,daily:$("#rdaily").checked,date:td(),done:{}});$("#rtext").value="";save();rrender()};
+rrender();
+
+// tracking
+let w=null,run=null,tmr=null;
+const hav=(a,b)=>{const R=6371000,r=x=>x*Math.PI/180,dl=r(b.lat-a.lat),dn=r(b.lon-a.lon);
+ const h=Math.sin(dl/2)**2+Math.cos(r(a.lat))*Math.cos(r(b.lat))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
+const fmt=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),c=s%60;return (h?h+":"+String(m).padStart(2,"0"):m)+":"+String(c).padStart(2,"0")};
+const pacef=(d,t)=>d>50?fmt(t/(d/1000)):"--";
+function upd(){if(!run)return;const t=(Date.now()-run.t0)/1000;
+ $("#dist").textContent=(run.d/1000).toFixed(2);$("#time").textContent=fmt(t);
+ $("#spd").textContent=(run.v*3.6).toFixed(1);$("#pace").textContent=pacef(run.d,t);}
+$("#go").onclick=()=>{
+ if(!navigator.geolocation){$("#gpsmsg").textContent="GPS isn’t available on this device.";return}
+ run={t0:Date.now(),d:0,v:0,last:null};
+ $("#go").classList.add("hide");$("#stop").classList.remove("hide");$("#gpsmsg").textContent="Waiting for GPS fix…";
+ tmr=setInterval(upd,1000);
+ w=navigator.geolocation.watchPosition(p=>{
+  if(p.coords.accuracy>35)return;$("#gpsmsg").textContent="Tracking…";
+  const c={lat:p.coords.latitude,lon:p.coords.longitude,t:p.timestamp};
+  if(run.last){const d=hav(run.last,c),dt=(c.t-run.last.t)/1000;
+   if(d>3&&dt>0){run.d+=d;run.v=p.coords.speed!=null&&p.coords.speed>=0?p.coords.speed:d/dt;run.last=c}
+   else if(d<=3)run.v=0}
+  else run.last=c;upd()},
+  e=>{$("#gpsmsg").textContent="Location blocked or unavailable ("+e.message+"). Allow location for this page and retry.";stopRun(false)},
+  {enableHighAccuracy:true,maximumAge:0,timeout:20000});
+};
+function stopRun(keep){if(w!=null)navigator.geolocation.clearWatch(w);w=null;clearInterval(tmr);
+ if(keep&&run&&run.d>50){st.sessions.push({ts:Date.now(),d:Math.round(run.d),s:Math.round((Date.now()-run.t0)/1000)});save()}
+ run=null;$("#go").classList.remove("hide");$("#stop").classList.add("hide");hist();}
+$("#stop").onclick=()=>stopRun(true);
+function hist(){const a=st.sessions.slice().reverse();
+ $("#hist").innerHTML=a.length?a.slice(0,10).map(s=>`<div class="ex"><b>${(s.d/1000).toFixed(2)} km · ${fmt(s.s)}</b><span>${new Date(s.ts).toLocaleDateString()} · ${pacef(s.d,s.s)} /km</span></div>`).join(""):"No sessions yet.";}
+hist();
+
+// predictions
+function predict(){const S=st.sessions.filter(s=>s.d>=800&&s.s>0),el=$("#predout");
+ if(!S.length){el.innerHTML="<h2>Predictions</h2><p class='sub'>Record at least one run of 0.8 km or more and I’ll estimate your 5K, 10K and half marathon.</p>";return}
+ // best effort -> Riegel (T2 = T1 × (D2/D1)^1.06)
+ const rg=(s,D)=>s.s*Math.pow(D/s.d,1.06);
+ const best=S.reduce((a,b)=>rg(a,5000)<rg(b,5000)?a:b);
+ let html=`<h2>Predicted race times now</h2>`+[["5K",5000],["10K",10000],["Half marathon",21097]].map(([n,D])=>`<div class="ex"><b>${n}: ${fmt(rg(best,D))}</b><span>${pacef(D,rg(best,D))} /km</span></div>`).join("");
+ if(S.length>=3){
+  const sp=S.map(s=>s.d/s.s),n=sp.length,xs=sp.map((_,i)=>i),mx=(n-1)/2,my=sp.reduce((a,b)=>a+b)/n;
+  const sl=xs.reduce((a,x,i)=>a+(x-mx)*(sp[i]-my),0)/xs.reduce((a,x)=>a+(x-mx)**2,0);
+  const gain=Math.max(-0.05,Math.min(0.10,sl*4/my));// 4 more sessions, capped
+  const t5=rg(best,5000)/(1+gain);
+  html+=`<h2 style="margin-top:14px">Trend</h2><p>${gain>=0?"You’re improving":"Speed is dipping"}. After ~4 more sessions at this rate: <b>5K ≈ ${fmt(t5)}</b>.</p><p class="note">Linear trend across ${n} runs, capped to keep it realistic.</p>`;
+ }else html+=`<p class="note" style="margin-top:10px">Log ${3-S.length} more run(s) to unlock your improvement trend.</p>`;
+ html+=`<p class="note">Estimates use the Riegel formula and assume you’re trained for the distance; real results vary with training, terrain and weather.</p>`;
+ el.innerHTML=html;}
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+if(typeof claude==="undefined"){["off","gen"].forEach(i=>{const e=document.getElementById(i);if(e)e.remove()});const m=document.getElementById("offmsg");if(m)m.textContent="Installed copy: works offline."}
+</script></body></html>
