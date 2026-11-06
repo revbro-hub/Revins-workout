@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Revin’s Workout app</title>
-<link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#111111">
+<title>Life</title>
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#2e9e4f">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f7f9;--card:#fff;--tx:#14181f;--mut:#667085;--ac:#e8590c;--bd:#e3e6eb}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1217;--card:#1a1f27;--tx:#eef1f5;--mut:#98a2b3;--ac:#ff8a4c;--bd:#2a313b}}
@@ -32,10 +32,11 @@ select,input[type=number]{width:100%;padding:10px;border-radius:10px;border:1px 
 .days{display:flex;gap:4px;margin:10px 0}.dtab{flex:1;padding:8px 0;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;font:inherit;font-size:13px}.dtab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 input[type=text],input[type=time]{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}input[type=time]{width:auto;flex:1}.x{border:0;background:none;color:var(--mut);font-size:18px;padding:0 6px;margin-left:auto}.ck>div{flex:1}nav button{font-size:12.5px;padding:10px 2px}
 .logo{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:#fff;border:1px solid #d9dde3;font-size:28px;flex:none}.ban{display:flex;border-radius:14px;overflow:hidden;margin:6px 0 4px;border:1px solid var(--bd)}.ban .bl{background:#fff;width:64px;display:grid;place-items:center;font-size:30px;padding:8px 0}.ban .br{flex:1;background:#111;color:#fff;font-weight:700;font-size:18px;display:flex;align-items:center;padding:0 16px}
+:root:root:root{--bg:#f3faf4;--card:#fff;--tx:#14301d;--mut:#5b7a66;--ac:#2e9e4f;--bd:#cfe8d5;color-scheme:light}nav button.on,.chip.on,.dtab.on,.btn{color:#fff}.btn.alt{color:#2e9e4f;border-color:#2e9e4f}.logo{padding:6px;background:#fff;border:1px solid #cfe8d5}.ban .bl{background:#fff;border-right:1px solid #cfe8d5}.ban .bl svg{width:40px;height:40px}.ban .br{background:#2e9e4f;color:#fff}
 .hide{display:none}.note{font-size:13px;color:var(--mut)}
 </style></head><body>
-<h1 style="display:flex;align-items:center;gap:10px"><span class="logo">🕷️</span>Revin’s Workout app</h1>
-<p class="sub">Goal-based workouts, GPS run tracking and result predictions.</p>
+<h1 style="display:flex;align-items:center;gap:10px"><span class="logo">🌱</span>Life</h1>
+<p class="sub">Workouts, run tracking and daily reminders.</p>
 <nav><button data-t="plan" class="on">Plan</button><button data-t="work">Workout</button><button data-t="track">Track</button><button data-t="pred">Predict</button><button data-t="rem">Reminders</button></nav>
 
 <section id="plan">
@@ -73,6 +74,7 @@ input[type=text],input[type=time]{width:100%;padding:10px;border-radius:10px;bor
 <input type="text" id="rtext" placeholder="e.g. Drink water, stretch, meal prep" maxlength="80">
 <div style="display:flex;gap:8px;margin-top:8px;align-items:center"><input type="time" id="rtime"><label class="ck" style="margin:0;align-items:center"><input type="checkbox" id="rdaily">Repeat daily</label></div>
 <button class="btn" id="radd">Add reminder</button><p class="note" style="margin-top:8px">This is a checklist. It won’t buzz your phone, so set a phone alarm for anything urgent.</p></div>
+<div class="card" id="rring" style="text-align:center"></div>
 <div class="card" id="rlist"></div></section>
 
 <section id="pred" class="hide"><div class="card" id="predout" class="sub">Loading…</div></section>
@@ -87,15 +89,17 @@ const save=()=>{try{localStorage.setItem("fc",JSON.stringify(st))}catch(e){}};
 $("#mine").onclick=()=>{st.plan=ROUTINE;st.src="mine";st.chk={};save();render();document.querySelector('[data-t="work"]').click()};
 $("#off").onclick=async()=>{const m=$("#offmsg");try{const dl=await claude.use("downloads");if(!dl){m.textContent="Saving isn’t available here. Use your browser’s Share or Menu → Add to Home Screen or Save Page.";return}
  const c=document.documentElement.cloneNode(true);["#equip","#phys","#wout","#hist","#predout"].forEach(s=>c.querySelector(s).innerHTML="");
- await dl.save({filename:"revins-workout.html",data:"<!DOCTYPE html>"+c.outerHTML});m.textContent="Saved. Open revins-workout.html from your Files app to use it with no internet. Its data is stored separately from this online copy."}catch(e){m.textContent="Couldn’t save the file. Use your browser’s Share or Menu → Add to Home Screen or Save Page."}};
+ await dl.save({filename:"life.html",data:"<!DOCTYPE html>"+c.outerHTML});m.textContent="Saved. Open life.html from your Files app to use it with no internet. Its data is stored separately from this online copy."}catch(e){m.textContent="Couldn’t save the file. Use your browser’s Share or Menu → Add to Home Screen or Save Page."}};
 // tabs
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));
  ["plan","work","track","pred","rem"].forEach(t=>$("#"+t).classList.toggle("hide",t!==b.dataset.t));
  if(b.dataset.t==="pred")predict();if(b.dataset.t==="rem")rrender();
 });
-[["plan","Plan"],["work","Workout"],["track","Track"],["pred","Predict"],["rem","Reminders"]].forEach(([id,n])=>{const s=document.getElementById(id);if(s&&!s.querySelector(".ban"))s.insertAdjacentHTML("afterbegin",`<div class="ban"><div class="bl">🕷️</div><div class="br">${n}</div></div>`)});
-try{if(!document.querySelector('link[rel="apple-touch-icon"]')){const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,180,180);x.font="120px serif";x.textAlign="center";x.textBaseline="middle";x.fillText("🕷️",90,98);const u=c.toDataURL("image/png");["apple-touch-icon","icon"].forEach(r=>{const l=document.createElement("link");l.rel=r;l.href=u;document.head.appendChild(l)})}}catch(e){}
+const PLANT=`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 58V30" stroke="#7ddc8c" stroke-width="3.4" stroke-linecap="round" fill="none"/><path d="M32 40C20 42 9 34 9 21c13-2 23 6 23 19z" fill="#9be8a0" stroke="#6fd37f" stroke-width="1.2" stroke-linejoin="round"/><path d="M32 32C44 34 55 26 55 13c-13-2-23 6-23 19z" fill="#9be8a0" stroke="#6fd37f" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+const lg=document.querySelector(".logo");if(lg)lg.innerHTML=PLANT;
+[["plan","Plan"],["work","Workout"],["track","Track"],["pred","Predict"],["rem","Reminders"]].forEach(([id,n])=>{const s=document.getElementById(id);if(s&&!s.querySelector(".ban"))s.insertAdjacentHTML("afterbegin",`<div class="ban"><div class="bl">${PLANT}</div><div class="br">${n}</div></div>`)});
+try{if(!document.querySelector('link[rel="apple-touch-icon"]')){const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,180,180);x.scale(2.8,2.8);x.lineCap="round";x.strokeStyle="#7ddc8c";x.lineWidth=3.4;x.stroke(new Path2D("M32 58V30"));x.fillStyle="#9be8a0";x.lineWidth=1.2;x.strokeStyle="#6fd37f";["M32 40C20 42 9 34 9 21c13-2 23 6 23 19z","M32 32C44 34 55 26 55 13c-13-2-23 6-23 19z"].forEach(d=>{const p=new Path2D(d);x.fill(p);x.stroke(p)});const u=c.toDataURL("image/png");["apple-touch-icon","icon"].forEach(r=>{const l=document.createElement("link");l.rel=r;l.href=u;document.head.appendChild(l)})}}catch(e){}
 // setup
 $("#level").value=st.level;$("#mins").value=st.mins;
 EQ.forEach(e=>{const b=document.createElement("button");b.className="chip"+((e==="All equipment"?EQ.slice(1).every(x=>st.equip.includes(x)):st.equip.includes(e))?" on":"");b.textContent=e;
@@ -200,6 +204,9 @@ function rrender(){const t=td(),L=st.rem.filter(r=>r.daily||r.date===t).sort((a,
 function rtick(id,v){const r=st.rem.find(x=>x.id===id);if(!r)return;r.done=r.done||{};if(v)r.done[td()]=1;else delete r.done[td()];save();rrender()}
 function rdel(e,id){e.preventDefault();e.stopPropagation();st.rem=st.rem.filter(x=>x.id!==id);save();rrender()}
 $("#radd").onclick=()=>{const x=$("#rtext").value.trim();if(!x)return;st.rem.push({id:Date.now(),text:x,time:$("#rtime").value,daily:$("#rdaily").checked,date:td(),done:{}});$("#rtext").value="";save();rrender()};
+function ring(){const t=td(),L=st.rem.filter(r=>r.daily||r.date===t),n=L.filter(r=>r.done&&r.done[t]).length,p=L.length?Math.round(n/L.length*100):0,C=2*Math.PI*54;
+ $("#rring").innerHTML=`<svg width="150" height="150" viewBox="0 0 130 130" role="img" aria-label="${p}% of reminders done"><circle cx="65" cy="65" r="54" fill="none" stroke="#dff3e3" stroke-width="12"/><circle cx="65" cy="65" r="54" fill="none" stroke="#2e9e4f" stroke-width="12" stroke-linecap="round" opacity="${p?1:0}" stroke-dasharray="${C*p/100} ${C}" transform="rotate(-90 65 65)"/><text x="65" y="65" text-anchor="middle" dominant-baseline="central" fill="#2e9e4f" font-size="30" font-weight="700" font-family="system-ui,sans-serif">${p}%</text></svg><p class="note">${n} of ${L.length} reminders done today</p>`}
+const _rr=rrender;rrender=function(){_rr();ring()};
 rrender();
 
 // tracking
@@ -251,5 +258,5 @@ function predict(){const S=st.sessions.filter(s=>s.d>=800&&s.s>0),el=$("#predout
  html+=`<p class="note">Estimates use the Riegel formula and assume you’re trained for the distance; real results vary with training, terrain and weather.</p>`;
  el.innerHTML=html;}
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
-if(typeof claude==="undefined"){["off","gen"].forEach(i=>{const e=document.getElementById(i);if(e)e.remove()});const m=document.getElementById("offmsg");if(m)m.textContent="Installed copy: works offline."}
+if(typeof claude==="undefined"){["off","gen"].forEach(i=>{const e=document.getElementById(i);if(e)e.remove()})}
 </script></body></html>
