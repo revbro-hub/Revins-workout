@@ -1,11 +1,11 @@
 {
- "name": "Revin’s Workout app",
- "short_name": "Revin’s Workout",
+ "name": "Life",
+ "short_name": "Life",
  "start_url": "./index.html",
  "scope": "./",
  "display": "standalone",
  "background_color": "#ffffff",
- "theme_color": "#111111",
+ "theme_color": "#2e9e4f",
  "icons": [
   {
    "src": "icon-192.png",
